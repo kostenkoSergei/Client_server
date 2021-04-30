@@ -1,1 +1,25 @@
-{"orders": []}
+{
+    "orders": [
+        {
+            "item": "some item",
+            "quantity": 10,
+            "price": 1000,
+            "buyer": "vasya pupkin",
+            "date": "24.05.2020"
+        },
+        {
+            "item": "some item",
+            "quantity": 10,
+            "price": 1000,
+            "buyer": "vasya pupkin",
+            "date": "24.05.2020"
+        },
+        {
+            "item": "some new item",
+            "quantity": 120,
+            "price": 10500,
+            "buyer": "vasya nepupkin",
+            "date": "24.06.2020"
+        }
+    ]
+}
