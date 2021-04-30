@@ -1,0 +1,8 @@
+first:
+- one
+- two
+- tree
+second: 5
+third:
+  nested_one: 50ˆ
+  nested_two: 150ˆ
