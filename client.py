@@ -44,4 +44,5 @@ def send(args, options_file):
     print("client close...")
 
 
-send(sys.argv, "config_client.json")
+if __name__ == '__main__':
+    send(sys.argv, "config_client.json")
