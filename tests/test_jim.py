@@ -1,26 +1,25 @@
-import unittest
 import sys
 import os.path
+import chardet
+import unittest
 
 sys.path.append(
     os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
 
-from client import *
-from options import *
+from jim import *
 
 
-class TestClientCase(unittest.TestCase):
-    def test_create_presence_msg(self):
-        test_user_name = "Vasya Pupkin"
-        test_status = "absent"
+class TestJim(unittest.TestCase):
+    def setUp(self) -> None:
+        self.test_dict = {"data": "éâô"}
+        self.test_str = "éâô"
+
+    def test_pack(self):
+        print(chardet.detect(pack(self.test_dict))["encoding"])
         self.assertEqual(
-            type(create_presence_msg(test_user_name, test_status)), dict, "msg to send have to be in a dict form")
-
-    def test_get_options(self):
-        options = get_options(args='', options_file="../config_client.json")
-        self.assertEqual((options["DEFAULT"]["PORT"], options["DEFAULT"]["HOST"]),
-                         (7777, "127.0.0.1"),
-                         "client didn't take default port and host")
+            chardet.detect(pack(self.test_dict))["encoding"],
+            "UTF-8-SIG", "encode type have to be utf-8"
+        )
 
 
 if __name__ == '__main__':

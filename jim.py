@@ -4,12 +4,12 @@ import json
 def pack(response_dict):
     """produces message to send via tcp"""
     str_msg = json.dumps(response_dict)
-    return str_msg.encode("utf-8")
+    return str_msg.encode("utf-8-sig")
 
 
 def unpack(byte_str):
     """unpacks received message"""
-    str_decoded = byte_str.decode('utf-8')
+    str_decoded = byte_str.decode("utf-8-sig")
     return json.loads(str_decoded)
 
 
