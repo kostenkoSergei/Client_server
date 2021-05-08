@@ -15,10 +15,17 @@ class TestJim(unittest.TestCase):
         self.test_str = "éâô"
 
     def test_pack(self):
-        print(chardet.detect(pack(self.test_dict))["encoding"])
         self.assertEqual(
             chardet.detect(pack(self.test_dict))["encoding"],
-            "UTF-8-SIG", "encode type have to be utf-8"
+            "UTF-8-SIG", "encode type have to be utf-8-sig"
+        )
+
+    def test_unpack(self):
+        test_str_msg = json.dumps(self.test_str)
+        test_str_bytes = test_str_msg.encode("utf-8-sig")
+        self.assertEqual(
+            unpack(test_str_bytes), "éâô",
+            "your message is packed in wrong way"
         )
 
 
