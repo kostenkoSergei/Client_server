@@ -23,4 +23,5 @@ def run(args, options_file):
             print('Client message is in wrong format')
 
 
-run(sys.argv, "config_server.json")
+if __name__ == '__main__':
+    run(sys.argv, "config_server.json")
