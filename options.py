@@ -33,4 +33,5 @@ def get_options(args, options_file):
             options['DEFAULT']['HOST'] = opt[1]
         elif opt[0] == "-p":
             options['DEFAULT']['PORT'] = opt[1]
+            print(options)
     return options

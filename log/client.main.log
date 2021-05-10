@@ -1,0 +1,4 @@
+2021-05-10 16:21:38,848 - DEBUG - client - server answered, status code = 200 
+2021-05-10 16:22:06,326 - DEBUG - client - server answered, status code = 402 
+2021-05-10 16:22:25,131 - CRITICAL - client - port has to be in [1024 ... 65535] 
+2021-05-10 16:23:00,498 - DEBUG - client - server answered, status code = 200 

@@ -2,12 +2,13 @@ import socket
 import time
 from jim import *
 from options import *
+from log.client_log_config import client_logger
 
 
 def create_presence_msg(user_name, status):
     ts = time.time()
     presence_msg = {
-        "action": "presence",
+        "action": "message",
         "time": ts,
         "type": "status",
         "user": {
@@ -15,6 +16,7 @@ def create_presence_msg(user_name, status):
             "status": status
         }
     }
+    # presence_msg = "wrong message format. string instead dict"
     return presence_msg
 
 
@@ -23,8 +25,13 @@ def send(args, options_file):
     host = conf['DEFAULT']['HOST']
     port = int(conf['DEFAULT']['PORT'])
     try:
+        if not 65535 >= port >= 1024:
+            raise ValueError
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         sock.connect((host, port))
+    except ValueError:
+        client_logger.critical('port has to be in [1024 ... 65535]')
+        sys.exit(1)
     except socket.error as err:
         print(f"Connection error: {err}")
         sys.exit(2)
@@ -32,10 +39,20 @@ def send(args, options_file):
     sock.send(msg)
 
     try:
-        msg = sock.recv(1024)
-        print(unpack(msg))
+        byte_msg = sock.recv(1024)
+        msg = unpack(byte_msg)
+        if msg['response'] == 200:
+            print(msg)
+            client_logger.debug('server answered, status code = 200')
+        elif msg['response'] == 402:
+            print(msg)
+            client_logger.debug('server answered, status code = 402')
+        else:
+            raise ValueError
+    except (ValueError, json.JSONDecodeError):
+        client_logger.error('Message decoding error')
     except socket.timeout:
-        print("Close connection by timeout.")
+        client_logger.error("Close connection by timeout.")
 
     if not msg:
         print("No response")
