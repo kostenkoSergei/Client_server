@@ -15,7 +15,7 @@ def run(args, options_file):
             raise ValueError
         sock.bind(('', port))
         sock.listen(5)  # server is waiting for requests;
-        print("sever is running")
+        print("server is running")
     except ValueError:
         server_logger.critical('port has to be in [1024 ... 65535]')
         sys.exit(1)
