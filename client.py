@@ -128,6 +128,7 @@ def user_input(sock, client_name):
 def user_output(sock, client_name):
     try:
         while True:
+            # клиент в режиме постоянного опроса сервера
             data = sock.recv(MAX_PACKAGE_LENGTH)
             if not data:
                 break

@@ -73,19 +73,20 @@ def parse_presence(jim_obj):
         return make_answer(400, {'error': 'Request has no "user"'})
     elif type(jim_obj['user']) != dict:
         return make_answer(400, {'error': '"user" is not dict'})
-    elif 'account_name' not in jim_obj['user'].keys():
-        return make_answer(400, {'error': '"user" has no "account_name"'})
-    elif not jim_obj['user']['account_name']:
-        return make_answer(400, {'error': '"account_name" is empty'})
+    elif 'client_name' not in jim_obj['user'].keys():
+        return make_answer(400, {'error': '"user" has no "client_name"'})
+    elif not jim_obj['user']['client_name']:
+        return make_answer(400, {'error': '"client_name" is empty'})
     else:
-        print(f'User {jim_obj["user"]["account_name"]} is presence')
+        print(f'User {jim_obj["user"]["client_name"]} is presence')
         if 'status' in jim_obj['user'].keys() and jim_obj['user']['status']:
-            print(f'Status user{jim_obj["user"]["account_name"]} is "' + jim_obj['user']['status'] + '"')
+            print(f'Status user{jim_obj["user"]["client_name"]} is "' + jim_obj['user']['status'] + '"')
         return make_answer(200)
 
 
 @log(LOG)
 def read_requests(r_clients, clients_data):
+    """Чтение запросов от клиентов"""
     for sock in r_clients:
         if sock not in clients_data.keys():
             return
@@ -93,6 +94,7 @@ def read_requests(r_clients, clients_data):
             msg = sock.recv(MAX_PACKAGE_LENGTH).decode('utf-8')
             try:
                 jim_obj = json.loads(msg)
+                choice_jim_action(jim_obj)
             except json.JSONDecodeError:
                 LOG.error(f'Данные не соответствуют протоколу jim {msg}')
                 continue
@@ -122,6 +124,7 @@ def read_requests(r_clients, clients_data):
 
 @log(LOG)
 def write_responses(w_clients, clients_data):
+    """Отправка сообщения клиенту/закрытие сокета при отключении клиента"""
     for sock in w_clients:
         if sock not in clients_data.keys():
             return
@@ -165,6 +168,7 @@ def main():
             r = []
             w = []
             try:
+                # запрашивает информацию о готовности к вводу, выводу
                 r, w, e = \
                     select.select(
                         clients_data.keys(), clients_data.keys(), [], wait)
