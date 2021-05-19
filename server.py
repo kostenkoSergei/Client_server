@@ -79,10 +79,8 @@ def parse_presence(jim_obj):
         return make_answer(400, {'error': '"account_name" is empty'})
     else:
         print(f'User {jim_obj["user"]["account_name"]} is presence')
-        if 'status' in jim_obj['user'].keys() \
-                and jim_obj['user']['status']:
-            print(f'Status user{jim_obj["user"]["account_name"]} is "' +
-                  jim_obj['user']['status'] + '"')
+        if 'status' in jim_obj['user'].keys() and jim_obj['user']['status']:
+            print(f'Status user{jim_obj["user"]["account_name"]} is "' + jim_obj['user']['status'] + '"')
         return make_answer(200)
 
 
@@ -108,16 +106,13 @@ def read_requests(r_clients, clients_data):
                 continue
             if 'action' in jim_obj.keys():
                 if jim_obj['action'] == 'presence':
-                    if 'user' in jim_obj.keys() \
-                            and isinstance(jim_obj['user'], dict) \
+                    if 'user' in jim_obj.keys() and isinstance(jim_obj['user'], dict) \
                             and 'client_name' in jim_obj['user'].keys():
-                        clients_data[sock]['client_name'] = \
-                            jim_obj['user']['client_name']
+                        clients_data[sock]['client_name'] = jim_obj['user']['client_name']
                         continue
                 elif jim_obj['action'] == 'msg':
                     for _, value in clients_data.items():
-                        if jim_obj['to'] == '#' \
-                                or jim_obj['to'] == value['client_name']:
+                        if jim_obj['to'] == '#' or jim_obj['to'] == value['client_name']:
                             value['msg_for_send'].append(msg)
         except Exception:
             print(f'Клиент {sock.fileno()} {sock.getpeername()} отключился')
