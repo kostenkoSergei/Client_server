@@ -94,7 +94,7 @@ def read_requests(r_clients, clients_data):
             try:
                 jim_obj = json.loads(msg)
             except json.JSONDecodeError:
-                LOG.error(f'Brocken jim {msg}')
+                LOG.error(f'Данные не соответствуют протоколу jim {msg}')
                 continue
 
             answer = make_answer(200)

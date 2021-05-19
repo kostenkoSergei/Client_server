@@ -13,13 +13,14 @@ from log.client_log_config import LOG
 
 @log(LOG)
 def parse_args():
-    parser = argparse.ArgumentParser()
+    """Парсит аргументы при запуске клиентов и сервера"""
+    parser = argparse.ArgumentParser()  # creating ArgumentParser object
     parser.add_argument('-a', default='localhost')
-    parser.add_argument('-n', default='Guest')
+    parser.add_argument('-n', default='Guest')  # extracting client name
     parser.add_argument('-p', type=int, default=DEFAULT_PORT)
     namespace = parser.parse_args(sys.argv[1:])
 
-    return namespace.a, namespace.p, namespace.n
+    return namespace.a, namespace.p, namespace.n  # returns host, port, namespace
 
 
 @log(LOG)
@@ -39,6 +40,7 @@ def parse_answer(jim_obj):
 
 @log(LOG)
 def make_presence_message(client_name, status):
+    """Создает сервисное сообщение для извещения сервера о присутствии клиента online"""
     return {
         'action': 'presence',
         'time': time.time(),
@@ -52,6 +54,7 @@ def make_presence_message(client_name, status):
 
 @log(LOG)
 def make_msg_message(client_name, msg, to='#'):
+    """Создает сообщение пользователь-чат"""
     return {
         'action': 'msg',
         'time': time.time(),
@@ -64,6 +67,7 @@ def make_msg_message(client_name, msg, to='#'):
 
 @log(LOG)
 def send_message_take_answer(sock, msg):
+    """Отправка сообщения клиента и прием сообщения сервера клиентом"""
     msg = json.dumps(msg, separators=(',', ':'))
     try:
         sock.send(msg.encode(ENCODING))
@@ -85,6 +89,7 @@ def cmd_help():
 
 @log(LOG)
 def user_input(sock, client_name):
+    """Отправка сообщения всем/приватное сообщение/выход в зависимости от команды пользователя"""
     try:
         cmd_help()
         while True:
@@ -96,13 +101,13 @@ def user_input(sock, client_name):
             elif msg[0] == 'help':
                 cmd_help()
                 continue
-            elif msg[0] == 'm':
+            elif msg[0] == 'm':  # создание сообщения для отправки в общий чат
                 if len(msg) < 2:
                     print('Неверное количество аргументов команды.'
                           'Введите "help" для вывода списка команд')
                     continue
                 msg = make_msg_message(client_name, ' '.join(msg[1:]))
-            elif msg[0] == 'p':
+            elif msg[0] == 'p':  # создание приватного сообщения
                 if len(msg) < 3:
                     print('Неверное количество аргументов команды.'
                           'Введите "help" для вывода списка команд')
@@ -129,10 +134,10 @@ def user_output(sock, client_name):
             try:
                 jim_obj = json.loads(data.decode(ENCODING))
             except json.JSONDecodeError:
-                LOG.error(f'Brocken jim {data}')
+                LOG.error(f'Данные не соответствуют протоколу jim {data}')
                 continue
             if not isinstance(jim_obj, dict):
-                LOG.error(f'Data not dict {jim_obj}')
+                LOG.error(f'Данные переданы не в виде словаря {jim_obj}')
                 continue
             if 'response' in jim_obj.keys():
                 LOG.debug(f'Получен ответ сервера {jim_obj["response"]}')
