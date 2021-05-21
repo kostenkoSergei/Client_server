@@ -186,3 +186,23 @@
 2021-05-19 21:47:32,146 - DEBUG -  messenger.client - Получен ответ сервера 200 
 2021-05-19 21:47:47,547 - DEBUG -  messenger.client - Log: make_msg_message(('test1', "'пошел нахрен'"),{}) = {'action': 'msg', 'time': 1621450067.547255, 'to': '#', 'from': 'test1', 'encoding': 'utf-8', 'message': "'пошел нахрен'"} 
 2021-05-19 21:47:47,561 - DEBUG -  messenger.client - Получен ответ сервера 200 
+2021-05-19 22:09:07,731 - DEBUG -  messenger.client - Log: parse_args((),{}) = ('localhost', 7777, 'test1') 
+2021-05-19 22:09:07,738 - DEBUG -  messenger.client - Log: make_presence_message(('test1', 'I am here!'),{}) = {'action': 'presence', 'time': 1621451347.7374418, 'type': 'status', 'user': {'client_name': 'test1', 'status': 'I am here!'}} 
+2021-05-19 22:09:07,739 - DEBUG -  messenger.client - Log: send_message_take_answer((<socket.socket fd=548, family=AddressFamily.AF_INET, type=SocketKind.SOCK_STREAM, proto=0, laddr=('127.0.0.1', 59026), raddr=('127.0.0.1', 7777)>, {'action': 'presence', 'time': 1621451347.7374418, 'type': 'status', 'user': {'client_name': 'test1', 'status': 'I am here!'}}),{}) = {'response': 200} 
+2021-05-19 22:09:07,739 - INFO -  messenger.client - Запущен клиент с парамертами: адрес сервера: localhost, порт: 7777, имя пользователя: test1 
+2021-05-19 22:09:07,739 - INFO -  messenger.client - Установлено соединение с сервером. Ответ сервера: {'response': 200} 
+2021-05-19 22:09:07,740 - DEBUG -  messenger.client - Запущены процессы 
+2021-05-19 22:09:07,741 - DEBUG -  messenger.client - Log: cmd_help((),{}) = None 
+2021-05-19 22:09:07,765 - DEBUG -  messenger.client - Log: parse_args((),{}) = ('localhost', 7777, 'test2') 
+2021-05-19 22:09:07,768 - DEBUG -  messenger.client - Log: make_presence_message(('test2', 'I am here!'),{}) = {'action': 'presence', 'time': 1621451347.7681825, 'type': 'status', 'user': {'client_name': 'test2', 'status': 'I am here!'}} 
+2021-05-19 22:09:07,771 - DEBUG -  messenger.client - Log: send_message_take_answer((<socket.socket fd=508, family=AddressFamily.AF_INET, type=SocketKind.SOCK_STREAM, proto=0, laddr=('127.0.0.1', 59027), raddr=('127.0.0.1', 7777)>, {'action': 'presence', 'time': 1621451347.7681825, 'type': 'status', 'user': {'client_name': 'test2', 'status': 'I am here!'}}),{}) = {'response': 200} 
+2021-05-19 22:09:07,771 - DEBUG -  messenger.client - Получен ответ сервера 200 
+2021-05-19 22:09:07,771 - INFO -  messenger.client - Запущен клиент с парамертами: адрес сервера: localhost, порт: 7777, имя пользователя: test2 
+2021-05-19 22:09:07,772 - INFO -  messenger.client - Установлено соединение с сервером. Ответ сервера: {'response': 200} 
+2021-05-19 22:09:07,773 - DEBUG -  messenger.client - Запущены процессы 
+2021-05-19 22:09:07,773 - DEBUG -  messenger.client - Log: cmd_help((),{}) = None 
+2021-05-19 22:09:07,979 - DEBUG -  messenger.client - Получен ответ сервера 200 
+2021-05-19 22:09:20,095 - DEBUG -  messenger.client - Log: make_msg_message(('test2', "'hi'"),{}) = {'action': 'msg', 'time': 1621451360.0954328, 'to': '#', 'from': 'test2', 'encoding': 'utf-8', 'message': "'hi'"} 
+2021-05-19 22:09:20,260 - DEBUG -  messenger.client - Получен ответ сервера 200 
+2021-05-19 22:09:29,675 - DEBUG -  messenger.client - Log: make_msg_message(('test2', "'hello'", 'test1'),{}) = {'action': 'msg', 'time': 1621451369.6757169, 'to': 'test1', 'from': 'test2', 'encoding': 'utf-8', 'message': "'hello'"} 
+2021-05-19 22:09:29,861 - DEBUG -  messenger.client - Получен ответ сервера 200 

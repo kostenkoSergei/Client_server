@@ -9,7 +9,7 @@ class TestChoiceJimActionFunction(unittest.TestCase):
         self.jim_obj = {'action': 'presence', 'time': 1593004547.839623,
                         'type': 'status',
                         'user': {
-                            'account_name': 'C0deMaver1ck',
+                            'account_name': 'test_user',
                             'status': 'Yep, I am here!'}
                         }
 
