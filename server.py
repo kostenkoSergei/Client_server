@@ -84,6 +84,9 @@ def parse_presence(jim_obj):
         return make_answer(200)
 
 
+groups = {}
+
+
 @log(LOG)
 def read_requests(r_clients, clients_data):
     """Чтение запросов от клиентов"""
@@ -102,7 +105,7 @@ def read_requests(r_clients, clients_data):
             answer = make_answer(200)
             answer = json.dumps(answer, separators=(',', ':'))
             clients_data[sock]['answ_for_send'].append(answer)
-
+            print(jim_obj)
             if not isinstance(jim_obj, dict):
                 LOG.error(f'Data not dict {jim_obj}')
                 continue
@@ -114,9 +117,25 @@ def read_requests(r_clients, clients_data):
                         continue
                 elif jim_obj['action'] == 'msg':
                     for _, value in clients_data.items():
-                        if jim_obj['to'] == '#' or jim_obj['to'] == value['client_name']:
+                        print(groups)
+                        if jim_obj['group'] is not None:
+                            for user in groups[jim_obj['group']]:
+                                jim_obj.update({'to': user})
+                                if jim_obj['to'] == value['client_name']:
+                                    value['msg_for_send'].append(json.dumps(jim_obj))
+                                    print(value['msg_for_send'])
+                        elif jim_obj['to'] == '#' or jim_obj['to'] == value['client_name']:
                             value['msg_for_send'].append(msg)
-        except Exception:
+
+                elif jim_obj['action'] == 'attach':
+                    for _, value in clients_data.items():
+                        if jim_obj['group'] in groups:
+                            if jim_obj['from'] not in groups[jim_obj['group']]:
+                                groups[jim_obj['group']].append(jim_obj['from'])
+                        else:
+                            groups[jim_obj['group']] = [jim_obj['from']]
+        except Exception as e:
+            print(e)
             print(f'Клиент {sock.fileno()} {sock.getpeername()} отключился')
             sock.close()
             del clients_data[sock]
@@ -135,7 +154,8 @@ def write_responses(w_clients, clients_data):
             elif len(clients_data[sock]['msg_for_send']):
                 msg = clients_data[sock]['msg_for_send'].pop()
                 sock.send(msg.encode('utf-8'))
-        except Exception:
+        except Exception as e:
+            print(e)
             print(
                 f'Клиент {sock.fileno()} {sock.getpeername()} отключился'
             )

@@ -53,15 +53,27 @@ def make_presence_message(client_name, status):
 
 
 @log(LOG)
-def make_msg_message(client_name, msg, to='#'):
+def make_msg_message(client_name, msg, to='#', group=None):
     """Создает сообщение пользователь-чат"""
     return {
         'action': 'msg',
         'time': time.time(),
         'to': to,
+        'group': group,
         'from': client_name,
         'encoding': 'utf-8',
         'message': msg,
+    }
+
+
+@log(LOG)
+def attach_to_group_message(client_name, group):
+    """Добавляет пользователя в группу"""
+    return {
+        'action': 'attach',
+        'time': time.time(),
+        'group': group,
+        'from': client_name,
     }
 
 
@@ -83,6 +95,8 @@ def cmd_help():
     print('Поддерживаемые команды:')
     print('m [сообщение] - отправить сообщение в общий чат.')
     print('p [получатель] [сообщение] - отправить приватное сообщение.')
+    print('cg [имя группы] - создать группу.')
+    print('g [имя группы] [сообщение] - отправить сообщение в группу.')
     print('help - вывести подсказки по командам')
     print('exit - выход из программы')
 
@@ -113,6 +127,18 @@ def user_input(sock, client_name):
                           'Введите "help" для вывода списка команд')
                     continue
                 msg = make_msg_message(client_name, ' '.join(msg[2:]), msg[1])
+            elif msg[0] == 'cg':  # создание группы
+                if len(msg) < 2:
+                    print('Неверное количество аргументов команды.'
+                          'Введите "help" для вывода списка команд')
+                    continue
+                msg = attach_to_group_message(client_name, group=msg[1])
+            elif msg[0] == 'g':  # отправка сообщения в группу
+                if len(msg) < 3:
+                    print('Неверное количество аргументов команды.'
+                          'Введите "help" для вывода списка команд')
+                    continue
+                msg = make_msg_message(client_name, ' '.join(msg[2:]), group=msg[1])
             else:
                 print('Команда не распознана. '
                       'Введите "help" для вывода списка команд')
