@@ -54,7 +54,7 @@ def make_presence_message(client_name, status):
 
 @log(LOG)
 def make_msg_message(client_name, msg, to='#'):
-    """Создает сообщение пользователь-чат"""
+    """Создает сообщение типа пользователь-чат"""
     return {
         'action': 'msg',
         'time': time.time(),

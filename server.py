@@ -86,7 +86,7 @@ def parse_presence(jim_obj):
 
 @log(LOG)
 def read_requests(r_clients, clients_data):
-    """Чтение запросов от клиентов"""
+    """Чтение полученных от клиентов запросов"""
     for sock in r_clients:
         if sock not in clients_data.keys():
             return
